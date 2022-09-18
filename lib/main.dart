@@ -1,6 +1,8 @@
 import 'package:donation_box/debug.dart';
 import 'package:donation_box/home.dart';
+import 'package:donation_box/view/auth-screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:page_transition/page_transition.dart';
 
 void main() {
@@ -12,15 +14,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Home(),
+      //home: const Home(),
       initialRoute: '/',
       onGenerateRoute: (settings) {
         switch (settings.name) {
+          case AuthScreen.route:
+            return PageTransition(
+                child: AuthScreen(),
+                type: PageTransitionType.leftToRight,
+                settings: settings);
           case Home.route:
             return PageTransition(
                 child: Home(),
