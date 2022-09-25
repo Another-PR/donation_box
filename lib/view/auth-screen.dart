@@ -1,3 +1,4 @@
+import 'package:donation_box/main_menu.dart';
 import 'package:donation_box/view-model/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      endDrawer: MainMenu(),
       appBar: AppBar(
         title: Text('Login/Signup'),
       ),

@@ -1,12 +1,14 @@
 import 'package:donation_box/main_menu.dart';
+import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
   static const route = '/home';
-
+  var name = app.currentUser!.profile;
   @override
   Widget build(BuildContext context) {
+    print(name.email.toString());
     return Scaffold(
       endDrawer: MainMenu(),
       appBar: AppBar(

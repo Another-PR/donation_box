@@ -5,7 +5,7 @@ import 'package:realm/realm.dart';
 EmailPasswordAuthProvider authProvider = EmailPasswordAuthProvider(app);
 
 Future<String> registerUser(email, password) async {
-  var msg = 'failure';
+  var msg = 'fail';
   try {
     await authProvider.registerUser(email, password).then((onValue) async {
       print('User Registered');
@@ -27,7 +27,7 @@ Future<String> registerUser(email, password) async {
 }
 
 Future<String> loginUser(email, password) async {
-  var msg = 'failure';
+  var msg = 'fail';
   Credentials emailPwCredentials = Credentials.emailPassword(email, password);
   try {
     await app.logIn(emailPwCredentials).then((value) async {
@@ -36,6 +36,26 @@ Future<String> loginUser(email, password) async {
     });
   } on RealmException catch (e) {
     return e.message;
+  }
+  return msg;
+}
+
+Future<String> logOutUser() async {
+  var msg = 'fail';
+  try {
+    if (app.currentUser != null) {
+      await app.currentUser!.logOut().then((value) {
+        msg = 'success';
+        print('Logged Out');
+      });
+    } else {
+      throw 'something went wrong';
+    }
+  } on RealmException catch (e) {
+    return e.message;
+  } catch (e) {
+    msg = e.toString();
+    return e.toString();
   }
   return msg;
 }
