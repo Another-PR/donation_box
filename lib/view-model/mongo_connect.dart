@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:realm/realm.dart';
 
@@ -9,7 +10,7 @@ App app = App(appConfig);
 
 //MongoDB Legacy
 connectToDB() async {
-  var db = await Db.create(<uri_here>);
+  var db = await Db.create(dotenv.env['MONGO_URI']!);
   await db
       .open()
       .then((value) => print("CONNECTED"))
