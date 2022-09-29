@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 class Home extends StatelessWidget {
   Home({Key? key}) : super(key: key);
   static const route = '/home';
-  var name = app.currentUser!.profile;
+  var name = app.currentUser?.profile;
   @override
   Widget build(BuildContext context) {
-    print(name.email.toString());
+    print(name?.email.toString());
+    //print(name?.);
     return Scaffold(
       endDrawer: MainMenu(),
       appBar: AppBar(

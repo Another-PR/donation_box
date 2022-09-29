@@ -69,7 +69,7 @@ class _AuthScreenState extends State<AuthScreen> {
           await registerUser(_authData['email'], _authData['password']);
       print('SignUp Status: ' + signUpStatus.toString());
       if (signUpStatus == 'success') {
-        Get.offAndToNamed('/home');
+        Navigator.of(context).pushReplacementNamed('/home');
       } else {
         Get.snackbar('Unable to Sign Up', signUpStatus,
             snackPosition: SnackPosition.BOTTOM);
@@ -106,6 +106,30 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Column(
                   children: <Widget>[
                     const Spacer(),
+                    if (_authMode == AuthMode.Signup)
+                      Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              labelText: 'First Name',
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value != null) {
+                                if (value.isEmpty || !value.contains('@')) {
+                                  return 'Invalid email!';
+                                }
+                                _authData['email'] = value;
+                              }
+                            },
+                            onSaved: (value) {
+                              if (value!.isNotEmpty) {
+                                _authData['password'] = value;
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     TextFormField(
                       decoration: const InputDecoration(
                         labelText: 'Email',

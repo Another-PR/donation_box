@@ -23,7 +23,7 @@ class MainMenu extends StatelessWidget {
           ListTile(
             title: Text('Debug'),
             onTap: () {
-              Navigator.of(context).pushNamed(Debug.route);
+              Navigator.of(context).pushReplacementNamed(Debug.route);
             },
           ),
           ListTile(
@@ -33,11 +33,13 @@ class MainMenu extends StatelessWidget {
                 print(app.currentUser!.profile.email);
                 var x = await logOutUser();
                 if (x == 'success') {
-                  Get.offAndToNamed('/');
+                  Navigator.of(context).pushReplacementNamed('/');
                 } else {
                   Get.snackbar("Couldn't Log out", x,
                       snackPosition: SnackPosition.BOTTOM);
                 }
+              } else {
+                Navigator.of(context).pushReplacementNamed('/');
               }
               //else null;
             },

@@ -1,11 +1,13 @@
 import 'package:donation_box/debug.dart';
 import 'package:donation_box/home.dart';
+import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:donation_box/view/auth-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:page_transition/page_transition.dart';
 
 void main() {
+  connectToDB();
   runApp(const MyApp());
 }
 
