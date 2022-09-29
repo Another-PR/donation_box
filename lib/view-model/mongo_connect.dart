@@ -22,6 +22,12 @@ connectToDB() async {
       model.User(userName: 'test', userId: '123456789', email: 'test@test.com');
   var userColl = db.collection('users');
 
-  userColl.insert(test.toJson());
-  print(await userColl.find().toList());
+  var user = await userColl.find(where.eq('user_id', '123456789')).toList();
+  print(user);
+  if (user.isEmpty) {
+    await userColl.insert(test.toJson());
+    print('inserted');
+  }
+  //userColl.insert(test.toJson());
+  //print(await userColl.find().toList());
 }
