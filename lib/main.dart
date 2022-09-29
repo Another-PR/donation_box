@@ -8,8 +8,9 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:page_transition/page_transition.dart';
 
 void main() async {
-  await connectToDB();
   await dotenv.load(fileName: ".env");
+  await connectToDB();
+  print(dotenv.get('MONGO_URI'));
   runApp(const MyApp());
 }
 
