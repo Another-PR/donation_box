@@ -1,18 +1,30 @@
+import 'package:donation_box/model/user.dart' as model;
 import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
 
 EmailPasswordAuthProvider authProvider = EmailPasswordAuthProvider(app);
 
-Future<String> registerUser(email, password) async {
+Future<String> registerUser(authData) async {
   var msg = 'fail';
+  var email = authData['email'];
+  var password = authData['password'];
+  var dob = authData['dob'];
+  var name = authData['name'];
+
   try {
-    await authProvider.registerUser(email, password).then((onValue) async {
+    await authProvider
+        .registerUser(authData["email"], authData["password"])
+        .then((onValue) async {
       print('User Registered');
       Credentials emailPwCredentials =
           Credentials.emailPassword(email, password);
       try {
         await app.logIn(emailPwCredentials).then((value) async {
+          var id = app.currentUser!.id;
+          model.User user =
+              model.User(name: name, userId: id, email: email, dob: dob);
+          insertUser(user);
           print('Logged In');
           msg = 'success';
         });

@@ -10,6 +10,7 @@ import 'package:page_transition/page_transition.dart';
 void main() async {
   await dotenv.load(fileName: ".env");
   await connectToDB();
+  await initializeCollections();
   print(dotenv.get('MONGO_URI'));
   runApp(const MyApp());
 }
