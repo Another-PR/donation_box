@@ -10,8 +10,6 @@ App app = App(appConfig);
 
 //MongoDB Legacy
 connectToDB() async {
-  //var db = await Db.create(
-  //  "mongodb+srv://another_pr:OharBxvkPtZuifrm@cluster0.dlxsqx4.mongodb.net/?retryWrites=true&w=majority");
   var db = await Db.create(dotenv.get('MONGO_URI'));
   await db
       .open()
