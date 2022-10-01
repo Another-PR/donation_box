@@ -1,7 +1,13 @@
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:realm/realm.dart';
+part 'user.g.dart';
+@RealmModel()
+class _LocalUser{
+  late String email;
+  late String userPassword;
+}
 
 enum Role { admin, user, org }
-
 class User {
   late String userId;
   late String email;

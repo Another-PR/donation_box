@@ -1,16 +1,21 @@
 import 'package:donation_box/main_menu.dart';
+import 'package:donation_box/model/user.dart';
 import 'package:donation_box/view-model/auth.dart';
 import 'package:donation_box/view-model/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'package:donation_box/main.dart';
+
 import 'package:intl/intl.dart';
+
 
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
-  static const route = '/';
+
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -62,6 +67,10 @@ class _AuthScreenState extends State<AuthScreen> {
           await loginUser(_authData['email'], _authData['password']);
       print('Sign In Status: ' + signInStatus.toString());
       if (signInStatus == 'success') {
+        var user = LocalUser(_authData['email']!, _authData['password']!);
+        localUser.write(() {
+          localUser.add(user);
+        });
         Get.offAndToNamed('/home');
       } else {
         Get.snackbar('Unable to Login', signInStatus,
@@ -74,6 +83,10 @@ class _AuthScreenState extends State<AuthScreen> {
       var signUpStatus = await registerUser(_authData);
       print('SignUp Status: ' + signUpStatus.toString());
       if (signUpStatus == 'success') {
+        var user = LocalUser(_authData['email']!, _authData['password']!);
+        localUser.write(() {
+          localUser.add(user);
+        });
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
         Get.snackbar('Unable to Sign Up', signUpStatus,
@@ -122,9 +135,11 @@ class _AuthScreenState extends State<AuthScreen> {
                             validator: (value) {
                               if (value != null) {
                                 if (value.isEmpty) {
+
                                   return 'Please type in a valid Name';
                                 }
                                 _authData['name'] = value;
+
                               }
                             },
                             onSaved: (value) {

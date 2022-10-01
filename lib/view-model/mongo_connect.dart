@@ -3,7 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:realm/realm.dart';
 
+import '../main.dart';
 import '../model/user.dart' as model;
+import '../model/user.dart';
 
 //Realm Code
 AppConfiguration appConfig = AppConfiguration('donation-box-wrnah');
@@ -21,6 +23,15 @@ connectToDB() async {
   }).catchError((error) {
     IS_DB_CONNECTED = false;
     print(error);
+  });
+  var users = localUser.all<LocalUser>();
+  print("printing users from realm");
+  // print(users.first.email);
+}
+
+deleteLocalUser(){
+  localUser.write((){
+    localUser.delete(localUser.all<LocalUser>().first);
   });
 }
 

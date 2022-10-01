@@ -1,4 +1,6 @@
+import 'package:donation_box/main.dart';
 import 'package:donation_box/main_menu.dart';
+import 'package:donation_box/model/user.dart';
 import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +14,7 @@ class Debug extends StatefulWidget {
 
 class _DebugState extends State<Debug> {
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +35,16 @@ class _DebugState extends State<Debug> {
                         await getUser(app.currentUser!.id)
                             .then((value) => isLoading = false);
                         setState(() {});
+                      },
+                      child: const Text('get user')),
+                  TextButton(
+                      onPressed: () async {
+
+                        localUser.write((){
+                           localUser.delete(localUser.all<LocalUser>().first);
+                        });
+                        print(localUser.all<LocalUser>().length.toString() +"&&&&&&&&&&&&&&&&&&");
+
                       },
                       child: const Text('get user'))
                 ],
