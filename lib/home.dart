@@ -1,10 +1,11 @@
 import 'package:donation_box/main_menu.dart';
+import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
-  static const route = '/';
-
+  Home({Key? key}) : super(key: key);
+  static const route = '/home';
+  var name = app.currentUser?.profile;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

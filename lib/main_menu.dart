@@ -1,6 +1,12 @@
 import 'package:donation_box/debug.dart';
 import 'package:donation_box/home.dart';
+import 'package:donation_box/model/user.dart';
+import 'package:donation_box/view-model/auth.dart';
+import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'main.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -20,7 +26,26 @@ class MainMenu extends StatelessWidget {
           ListTile(
             title: Text('Debug'),
             onTap: () {
-              Navigator.of(context).pushNamed(Debug.route);
+              Navigator.of(context).pushReplacementNamed(Debug.route);
+            },
+          ),
+          ListTile(
+            title: Text(app.currentUser != null ? 'LogOut' : 'Log in'),
+            onTap: () async {
+              if (app.currentUser != null) {
+                print(app.currentUser!.profile.email);
+                var x = await logOutUser();
+                if (x == 'success') {
+                  Navigator.of(context).pushReplacementNamed('/');
+                } else {
+                  print(x);
+                  Get.snackbar("Couldn't Log out", x,
+                      snackPosition: SnackPosition.BOTTOM);
+                }
+              } else {
+                Navigator.of(context).pushReplacementNamed('/');
+              }
+              //else null;
             },
           ),
         ],
