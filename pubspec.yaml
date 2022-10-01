@@ -42,6 +42,8 @@ dependencies:
   flutter_riverpod: ^1.0.4
   mongo_dart: ^0.7.4+1
   flutter_dotenv: ^5.0.2
+  intl: ^0.17.0
+  enum_to_string: ^2.0.1
 
 dev_dependencies:
   flutter_test:

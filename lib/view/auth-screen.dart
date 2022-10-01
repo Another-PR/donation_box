@@ -1,10 +1,15 @@
 import 'package:donation_box/main_menu.dart';
 import 'package:donation_box/model/user.dart';
 import 'package:donation_box/view-model/auth.dart';
+import 'package:donation_box/view-model/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:donation_box/main.dart';
+
+import 'package:intl/intl.dart';
+
 
 enum AuthMode { Signup, Login }
 
@@ -22,9 +27,13 @@ class _AuthScreenState extends State<AuthScreen> {
   Map<String, String> _authData = {
     'email': '',
     'password': '',
+    'name': '',
+    'dob': ''
   };
   var _isLoading = false;
-  var _passwordController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _dateInputController = TextEditingController();
+  DateTime? pickedDate;
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
       setState(() {
@@ -59,8 +68,8 @@ class _AuthScreenState extends State<AuthScreen> {
       print('Sign In Status: ' + signInStatus.toString());
       if (signInStatus == 'success') {
         var user = LocalUser(_authData['email']!, _authData['password']!);
-        uuser.write(() {
-          uuser.add(user);
+        localUser.write(() {
+          localUser.add(user);
         });
         Get.offAndToNamed('/home');
       } else {
@@ -71,13 +80,12 @@ class _AuthScreenState extends State<AuthScreen> {
     } else {
       print('Email' + _authData['email'].toString());
       print('pass' + _authData['password'].toString());
-      var signUpStatus =
-          await registerUser(_authData['email'], _authData['password']);
+      var signUpStatus = await registerUser(_authData);
       print('SignUp Status: ' + signUpStatus.toString());
       if (signUpStatus == 'success') {
         var user = LocalUser(_authData['email']!, _authData['password']!);
-        uuser.write(() {
-          uuser.add(user);
+        localUser.write(() {
+          localUser.add(user);
         });
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
@@ -109,7 +117,7 @@ class _AuthScreenState extends State<AuthScreen> {
               padding: const EdgeInsets.all(20),
               width: size.width * 0.8,
               height: _authMode == AuthMode.Signup
-                  ? size.height * 0.5
+                  ? size.height * 0.8
                   : size.height * 0.4,
               child: Form(
                 key: _formKey,
@@ -121,20 +129,63 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           TextFormField(
                             decoration: const InputDecoration(
-                              labelText: 'First Name',
+                              labelText: 'Name',
                             ),
                             keyboardType: TextInputType.name,
                             validator: (value) {
                               if (value != null) {
                                 if (value.isEmpty) {
-                                  return 'Invalid name!';
+
+                                  return 'Please type in a valid Name';
                                 }
+                                _authData['name'] = value;
 
                               }
                             },
                             onSaved: (value) {
                               if (value!.isNotEmpty) {
-                                _authData['password'] = value;
+                                _authData['name'] = value;
+                              }
+                            },
+                          ),
+                          TextFormField(
+                            readOnly: true,
+                            controller: _dateInputController,
+                            decoration: const InputDecoration(
+                              labelText: 'Enter DOB',
+                              icon: Icon(
+                                Icons.calendar_today,
+                                color: Colors.black,
+                                size: 18,
+                              ),
+                              //iconColor: Colors.black,
+                            ),
+                            onTap: () async {
+                              pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now());
+                              if (pickedDate != null) {
+                                _dateInputController.text =
+                                    DateFormat('dd-MM-yyyy')
+                                        .format(pickedDate!);
+                                print(pickedDate);
+                                setState(() {});
+                              }
+                            },
+                            validator: (value) {
+                              if (value != null) {
+                                bool isAge = pickedDate!.isAtleastYearsOld(18);
+                                if (value.isEmpty || isAge == false) {
+                                  return 'You need to be more than 18 to sign up';
+                                }
+                                _authData['dob'] = value;
+                              }
+                            },
+                            onSaved: (value) {
+                              if (value!.isNotEmpty) {
+                                _authData['dob'] = value;
                               }
                             },
                           ),
@@ -155,7 +206,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                       onSaved: (value) {
                         if (value!.isNotEmpty) {
-                          _authData['password'] = value;
+                          _authData['email'] = value;
                         }
                       },
                     ),

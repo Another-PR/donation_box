@@ -38,11 +38,11 @@ class MainMenu extends StatelessWidget {
                 if (x == 'success') {
                   Navigator.of(context).pushReplacementNamed('/');
                 } else {
+                  print(x);
                   Get.snackbar("Couldn't Log out", x,
                       snackPosition: SnackPosition.BOTTOM);
                 }
               } else {
-                uuser.deleteAll();
                 Navigator.of(context).pushReplacementNamed('/');
               }
               //else null;

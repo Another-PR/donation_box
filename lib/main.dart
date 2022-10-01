@@ -9,16 +9,17 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:realm/realm.dart';
-late Realm uuser;
+late Realm localUser;
 void main() async {
   var config = Configuration.local(
     [
       LocalUser.schema
     ],
   );
-  uuser = Realm(config);
+  localUser = Realm(config);
   await dotenv.load(fileName: ".env");
   await connectToDB();
+  await initializeCollections();
 
   print(dotenv.get('MONGO_URI'));
   runApp(const MyApp());
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: const Home(),
-      initialRoute: '/',
+      initialRoute: '/', //TODO Error screen
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case LoginWrapper.route:

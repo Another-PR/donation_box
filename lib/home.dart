@@ -8,8 +8,6 @@ class Home extends StatelessWidget {
   var name = app.currentUser?.profile;
   @override
   Widget build(BuildContext context) {
-    print(name?.email.toString());
-    //print(name?.);
     return Scaffold(
       endDrawer: MainMenu(),
       appBar: AppBar(

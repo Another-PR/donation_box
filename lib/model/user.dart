@@ -1,4 +1,4 @@
-
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:realm/realm.dart';
 part 'user.g.dart';
 @RealmModel()
@@ -7,27 +7,41 @@ class _LocalUser{
   late String userPassword;
 }
 
+enum Role { admin, user, org }
 class User {
-  late String userName;
   late String userId;
   late String email;
-  //dob
-  //verified
-  //donor
+  late String dob;
+  late String name;
+  late bool verified;
+  late Role role;
 
-  User({required this.userName, required this.userId, required this.email});
+  User({
+    required this.userId,
+    required this.email,
+    required this.dob,
+    required this.name,
+    this.verified = false,
+    this.role = Role.user,
+  });
 
   User.fromJson(Map<String, dynamic> json) {
-    userName = json['user_name'];
+    name = json['name'];
     userId = json['user_id'];
     email = json['email'];
+    dob = json['dob'];
+    verified = json['verified'];
+    role = EnumToString.fromString(Role.values, json['role'])!;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_name'] = this.userName;
+    data['name'] = this.name;
     data['user_id'] = this.userId;
     data['email'] = this.email;
+    data['dob'] = this.dob;
+    data['verified'] = this.verified;
+    data['role'] = EnumToString.convertToString(this.role);
     return data;
   }
 }
