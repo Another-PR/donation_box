@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //home: const Home(),
-      initialRoute: '/',
+      initialRoute: '/', //TODO Error screen
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case AuthScreen.route:

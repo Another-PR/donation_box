@@ -90,12 +90,6 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          bool x = pickedDate!.isAtleastYearsOld(18);
-          print(x);
-        },
-      ),
       endDrawer: MainMenu(),
       appBar: AppBar(
         title: Text('Login/Signup'),
