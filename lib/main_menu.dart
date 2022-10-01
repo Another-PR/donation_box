@@ -1,9 +1,12 @@
 import 'package:donation_box/debug.dart';
 import 'package:donation_box/home.dart';
+import 'package:donation_box/model/user.dart';
 import 'package:donation_box/view-model/auth.dart';
 import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import 'main.dart';
 
 class MainMenu extends StatelessWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class MainMenu extends StatelessWidget {
                       snackPosition: SnackPosition.BOTTOM);
                 }
               } else {
+                uuser.deleteAll();
                 Navigator.of(context).pushReplacementNamed('/');
               }
               //else null;

@@ -1,6 +1,9 @@
+import 'package:donation_box/main.dart';
 import 'package:donation_box/view-model/mongo_connect.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realm/realm.dart';
+
+import '../model/user.dart';
 
 EmailPasswordAuthProvider authProvider = EmailPasswordAuthProvider(app);
 
@@ -24,6 +27,15 @@ Future<String> registerUser(email, password) async {
     return e.message;
   }
   return msg;
+}
+
+Future<String> autoLogn() async {
+  if (uuser.all<LocalUser>().isEmpty) {
+    return "NA";
+  }
+  var result = await loginUser(
+      uuser.all<LocalUser>().first.email, uuser.all<LocalUser>().first.userPassword);
+  return result;
 }
 
 Future<String> loginUser(email, password) async {
@@ -59,6 +71,8 @@ Future<String> logOutUser() async {
   }
   return msg;
 }
+
+// Future<String>
 
 //loginUser(email, password) {}
 

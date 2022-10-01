@@ -1,14 +1,16 @@
 import 'package:donation_box/main_menu.dart';
+import 'package:donation_box/model/user.dart';
 import 'package:donation_box/view-model/auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:donation_box/main.dart';
 
 enum AuthMode { Signup, Login }
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
-  static const route = '/';
+
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -56,6 +58,10 @@ class _AuthScreenState extends State<AuthScreen> {
           await loginUser(_authData['email'], _authData['password']);
       print('Sign In Status: ' + signInStatus.toString());
       if (signInStatus == 'success') {
+        var user = LocalUser(_authData['email']!, _authData['password']!);
+        uuser.write(() {
+          uuser.add(user);
+        });
         Get.offAndToNamed('/home');
       } else {
         Get.snackbar('Unable to Login', signInStatus,
@@ -69,6 +75,10 @@ class _AuthScreenState extends State<AuthScreen> {
           await registerUser(_authData['email'], _authData['password']);
       print('SignUp Status: ' + signUpStatus.toString());
       if (signUpStatus == 'success') {
+        var user = LocalUser(_authData['email']!, _authData['password']!);
+        uuser.write(() {
+          uuser.add(user);
+        });
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
         Get.snackbar('Unable to Sign Up', signUpStatus,
@@ -113,13 +123,13 @@ class _AuthScreenState extends State<AuthScreen> {
                             decoration: const InputDecoration(
                               labelText: 'First Name',
                             ),
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.name,
                             validator: (value) {
                               if (value != null) {
-                                if (value.isEmpty || !value.contains('@')) {
-                                  return 'Invalid email!';
+                                if (value.isEmpty) {
+                                  return 'Invalid name!';
                                 }
-                                _authData['email'] = value;
+
                               }
                             },
                             onSaved: (value) {

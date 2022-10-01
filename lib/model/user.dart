@@ -1,3 +1,12 @@
+
+import 'package:realm/realm.dart';
+part 'user.g.dart';
+@RealmModel()
+class _LocalUser{
+  late String email;
+  late String userPassword;
+}
+
 class User {
   late String userName;
   late String userId;
