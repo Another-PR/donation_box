@@ -2,19 +2,17 @@ import 'package:donation_box/debug.dart';
 import 'package:donation_box/home.dart';
 import 'package:donation_box/model/user.dart';
 import 'package:donation_box/view-model/mongo_connect.dart';
-import 'package:donation_box/view/auth-screen.dart';
 import 'package:donation_box/view/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:realm/realm.dart';
+
 late Realm localUser;
 void main() async {
   var config = Configuration.local(
-    [
-      LocalUser.schema
-    ],
+    [LocalUser.schema],
   );
   localUser = Realm(config);
   await dotenv.load(fileName: ".env");
